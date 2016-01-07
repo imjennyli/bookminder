@@ -1,7 +1,9 @@
 package com.jennyli.bookminder;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,6 +36,12 @@ public class ListBooks extends Activity
     protected void onResume()
     {
         super.onResume();
-        bookCount.setText(BookProgressDbHelper.getInstance(this).getBooksCount()+ " books being tracked.");
+        bookCount.setText(BookProgressDbHelper.getInstance(this).getBooksCount() + " books being tracked.");
+    }
+
+    public void showAddBookDialog(View v)
+    {
+        DialogFragment dialog = new AddBookDialog();
+        dialog.show(getFragmentManager(), "AddBookDialog");
     }
 }
