@@ -1,5 +1,6 @@
 package com.jennyli.bookminder.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -90,5 +91,17 @@ public class BookProgressDbHelper extends SQLiteOpenHelper
         int count = cursor.getCount();
         cursor.close();
         return count;
+    }
+
+    public void addBookProgress(BookProgress bp)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ProgressTable.COLUMN_TITLE, bp.getTitle());
+        contentValues.put(ProgressTable.COLUMN_PROGRESS, bp.getProgress());
+
+        db.insert(ProgressTable.TABLE_NAME, null, contentValues);
+        db.close();
     }
 }

@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jennyli.bookminder.db.BookProgressDbHelper;
+import com.jennyli.bookminder.model.BookProgress;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -15,8 +17,10 @@ import butterknife.ButterKnife;
 /**
  * Created by jennyli on 1/6/2016.
  */
-public class ListBooks extends Activity
+public class ListBooks extends Activity implements AddBookDialog.AddBookDialogListener
 {
+    private static final String DIALOGFRAGMENT_ADDBOOK_KEY = "ADDBOOK_DIALOG_FRAGMENT";
+
     @Bind(R.id.book_list)
     ListView bookList;
 
@@ -30,6 +34,7 @@ public class ListBooks extends Activity
         setContentView(R.layout.list_books);
 
         ButterKnife.bind(this);
+
     }
 
     @Override
@@ -42,6 +47,20 @@ public class ListBooks extends Activity
     public void showAddBookDialog(View v)
     {
         DialogFragment dialog = new AddBookDialog();
-        dialog.show(getFragmentManager(), "AddBookDialog");
+        dialog.show(getFragmentManager(), DIALOGFRAGMENT_ADDBOOK_KEY);
+
+    }
+
+    @Override
+    public void onPositiveClick(AddBookDialog dialog)
+    {
+        String bookTitle =  dialog.getBookTitle().getText().toString();
+        String bookProgress = dialog.getBookProgress().getText().toString();
+        Toast.makeText(this, bookTitle+": "+bookProgress, Toast.LENGTH_SHORT).show();
+
+        BookProgress bp = new BookProgress();
+        bp.setTitle(bookTitle);
+        bp.setProgress(Integer.valueOf(bookProgress));
+        BookProgressDbHelper.getInstance(this).addBookProgress(bp);
     }
 }
