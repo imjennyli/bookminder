@@ -41,7 +41,8 @@ public class ListBooks extends Activity implements AddBookDialog.AddBookDialogLi
     protected void onResume()
     {
         super.onResume();
-        bookCount.setText(BookProgressDbHelper.getInstance(this).getBooksCount() + " books being tracked.");
+        int count = BookProgressDbHelper.getInstance(this).getBooksCount();
+        bookCount.setText(getResources().getQuantityString(R.plurals.book_count_text, count, count));
     }
 
     public void showAddBookDialog(View v)
